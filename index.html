@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Tarot Ultra" />
+    <title>Tarot Ultra</title>
+
+    <style>
+      :root {
+        --bg:#07070e; --fg:#fff;
+        --muted:#b7b7c6;
+        --accent:#a78bfa; --accent2:#f6c453;
+      }
+      html[data-theme='violeta']{--accent:#a78bfa;--accent2:#f472b6;}
+      html[data-theme='oro']{--accent:#f2cd5e;--accent2:#f6a40f;}
+      html[data-theme='oscuro']{--accent:#7dd3fc;--accent2:#22d3ee;}
+
+      html, body { height:100%; margin:0; background:var(--bg); color:var(--fg);
+        font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Inter,Helvetica,Arial;
+      }
+      #root { position:relative; z-index:1; }
+      #particles { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    </style>
+  </head>
+
+  <body>
+    <!-- Starry background -->
+    <canvas id="particles"></canvas>
+
+    <!-- React root -->
+    <div id="root">Cargando Tarot Ultra...</div>
+
+    <!-- Main React app -->
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Simple star particles -->
+    <script>
+      const c = document.getElementById('particles');
+      const x = c.getContext('2d');
+      function resize(){ c.width = innerWidth; c.height = innerHeight; }
+      addEventListener('resize', resize); resize();
+      const S = Array.from({length: 120}, ()=>({
+        x: Math.random()*c.width, y: Math.random()*c.height,
+        r: Math.random()*1.5+0.3, s: Math.random()*0.6+0.2
+      }));
+      function step(){
+        x.clearRect(0,0,c.width,c.height);
+        x.fillStyle = 'rgba(255,255,255,.85)';
+        for(const s of S){
+          s.y += s.s; if(s.y>c.height) s.y = -5;
+          x.beginPath(); x.arc(s.x, s.y, s.r, 0, Math.PI*2);
+          x.fill();
+        }
+        requestAnimationFrame(step);
+      }
+      step();
+    </script>
+  </body>
+</html>
